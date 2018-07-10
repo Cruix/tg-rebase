@@ -47,7 +47,15 @@
 		return 1
 
 /mob/living/carbon/Move(NewLoc, direct)
+	// yogs start
+	var/old_dir = dir
+	var/old_loc = loc
+	// yogs end
 	. = ..()
+	// yogs start
+	if(. && dna && dna.species)
+		dna.species.after_move(src, old_loc, NewLoc, old_dir)
+	// yogs end
 	if(. && mob_has_gravity()) //floating is easy
 		if(has_trait(TRAIT_NOHUNGER))
 			nutrition = NUTRITION_LEVEL_FED - 1	//just less than feeling vigorous
