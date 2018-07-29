@@ -1,4 +1,4 @@
-/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null, var/datum/admin_help/T = null)
+/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null, var/datum/support_ticket/T = null)
 	var/mob/M
 	var/client/C
 	var/key

@@ -163,7 +163,7 @@ GLOBAL_LIST_EMPTY(external_rsc_urls)
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
 
-	GLOB.ahelp_tickets.ClientLogin(src)
+	GLOB.support_tickets.ClientLogin(src)
 	var/connecting_admin = FALSE //because de-admined admins connecting should be treated like admins.
 	//Admin Authorisation
 	holder = GLOB.admin_datums[ckey]
@@ -432,7 +432,7 @@ GLOBAL_LIST_EMPTY(external_rsc_urls)
 			send2irc("Server", "[cheesy_message] (No admins online)")
 
 	sync_logout_with_db(connection_number) // yogs - logout logging
-	GLOB.ahelp_tickets.ClientLogout(src)
+	GLOB.support_tickets.ClientLogout(src)
 	GLOB.directory -= ckey
 	GLOB.clients -= src
 	if(movingmob != null)

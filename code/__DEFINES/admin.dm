@@ -79,3 +79,8 @@
 
 #define SPAM_TRIGGER_WARNING	5	//Number of identical messages required before the spam-prevention will warn you to stfu
 #define SPAM_TRIGGER_AUTOMUTE	10	//Number of identical messages required before the spam-prevention will automute you
+
+// yogs start
+#define ADMIN_TICKET	1
+#define MENTOR_TICKET	2
+// yogs end

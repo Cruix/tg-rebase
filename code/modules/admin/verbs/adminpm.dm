@@ -51,7 +51,7 @@
 			to_chat(src, "<font color='red'>Error: Admin-PM: Client not found.</font>")
 		return
 
-	var/datum/admin_help/AH = C.current_ticket
+	var/datum/support_ticket/AH = C.current_ticket
 
 	if(AH)
 		message_admins("[key_name_admin(src)] has started replying to [key_name(C, 0, 0)]'s admin help.")
@@ -146,7 +146,7 @@
 
 	if(irc)
 		to_chat(src, "<font color='blue'>PM to-<b>Admins</b>: <span class='linkify'>[rawmsg]</span></font>")
-		var/datum/admin_help/AH = admin_ticket_log(src, keywordparsedmsg) // yogs - Yog Tickets
+		var/datum/support_ticket/AH = admin_ticket_log(src, keywordparsedmsg) // yogs - Yog Tickets
 		ircreplyamount--
 		send2irc("[AH ? "#[AH.id] " : ""]Reply: [ckey]", rawmsg)
 	else
@@ -177,7 +177,7 @@
 		else
 			if(holder)	//sender is an admin but recipient is not. Do BIG RED TEXT
 				if(!recipient.current_ticket)
-					new /datum/admin_help(msg, recipient, TRUE) // yogs - Yog Tickets
+					new /datum/support_ticket(msg, recipient, TRUE) // yogs - Yog Tickets
 				if(!recipient.current_ticket.handling_admin)
 					recipient.current_ticket.Administer(src) // yogs - Yog Tickets
 
@@ -227,7 +227,7 @@
 	target = ckey(target)
 	var/client/C = GLOB.directory[target]
 
-	var/datum/admin_help/ticket = C ? C.current_ticket : GLOB.ahelp_tickets.CKey2ActiveTicket(target)
+	var/datum/support_ticket/ticket = C ? C.current_ticket : GLOB.support_tickets.CKey2ActiveTicket(target)
 	var/compliant_msg = trim(lowertext(msg))
 	var/irc_tagged = "[sender](IRC)"
 	var/list/splits = splittext(compliant_msg, " ")
@@ -259,7 +259,7 @@
 					fail = text2num(splits[3])
 				if(isnull(fail))
 					return "Error: No/Invalid ticket id specified. [IRC_AHELP_USAGE]"
-				var/datum/admin_help/AH = GLOB.ahelp_tickets.TicketByID(fail)
+				var/datum/support_ticket/AH = GLOB.support_tickets.TicketByID(fail)
 				if(!AH)
 					return "Error: Ticket #[fail] not found"
 				if(AH.initiator_ckey != target)
@@ -267,12 +267,12 @@
 				AH.Reopen()
 				return "Ticket #[ticket.id] successfully reopened"
 			if("list")
-				var/list/tickets = GLOB.ahelp_tickets.TicketsByCKey(target)
+				var/list/tickets = GLOB.support_tickets.TicketsByCKey(target)
 				if(!tickets.len)
 					return "None"
 				. = ""
 				for(var/I in tickets)
-					var/datum/admin_help/AH = I
+					var/datum/support_ticket/AH = I
 					if(.)
 						. += ", "
 					if(AH == ticket)

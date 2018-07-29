@@ -556,7 +556,7 @@
 			GLOB.cameranet.stat_entry()
 		// yogs start - Yogs Ticket
 		/*if(statpanel("Tickets"))
-			GLOB.ahelp_tickets.stat_entry()
+			GLOB.support_tickets.stat_entry()
 		*/
 		// yogs end
 

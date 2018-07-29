@@ -74,7 +74,7 @@
 		ckey = ckey(banckey)
 		computerid = bancid
 		ip = banip
-	
+
 	var/had_banned_mob = banned_mob != null
 	var/client/banned_client = banned_mob?.client
 	var/banned_mob_guest_key = had_banned_mob && IsGuestKey(banned_mob.key)
@@ -149,7 +149,7 @@
 	to_chat(usr, "<span class='adminnotice'>Ban saved to database.</span>")
 	var/msg = "[key_name(usr)] has added a [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database." // yogs - Yog Tickets
 	message_admins(msg,1)
-	var/datum/admin_help/AH = admin_ticket_log(ckey, msg)
+	var/datum/support_ticket/AH = admin_ticket_log(ckey, msg)
 
 	if(announceinirc)
 		send2irc("BAN ALERT","[a_ckey] applied a [bantype_str] on [ckey]")

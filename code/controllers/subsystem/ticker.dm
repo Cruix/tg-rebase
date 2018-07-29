@@ -585,7 +585,7 @@ SUBSYSTEM_DEF(ticker)
 	round_end_sound_sent = TRUE
 
 // yogs start - Mods can reboot when last ticket is closed
-/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay, force = FALSE) 
+/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay, force = FALSE)
 	set waitfor = FALSE
 	if(usr && !force)
 		if(!check_rights(R_SERVER, TRUE))
@@ -600,7 +600,7 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, "<span class='boldannounce'>An admin has delayed the round end.</span>")
 		return
 	//yogs start - yogs tickets
-	if(GLOB.ahelp_tickets && GLOB.ahelp_tickets.ticketAmount)
+	if(GLOB.support_tickets && GLOB.support_tickets.activeAdminTickets)
 		var/list/adm = get_admin_counts(R_ADMIN)
 		var/list/activemins = adm["present"]
 		if(activemins.len > 0)

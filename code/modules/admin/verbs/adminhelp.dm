@@ -6,7 +6,7 @@
 //TICKET MANAGER
 //
 
-GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
+GLOBAL_DATUM_INIT(support_tickets, /datum/admin_help_tickets, new)
 
 /datum/admin_help_tickets
 	var/list/active_tickets = list()
@@ -81,7 +81,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	if(!l2b)
 		return
 	var/list/dat = list("<html><head><title>[title]</title></head>")
-	dat += "<A href='?_src_=holder;[HrefToken()];ahelp_tickets=[state]'>Refresh</A><br><br>"
+	dat += "<A href='?_src_=holder;[HrefToken()];support_tickets=[state]'>Refresh</A><br><br>"
 	for(var/I in l2b)
 		var/datum/admin_help/AH = I
 		dat += "<span class='adminnotice'><span class='adminhelp'>Ticket #[AH.id]</span>: <A href='?_src_=holder;[HrefToken()];ahelp=[REF(AH)];ahelp_action=ticket'>[AH.initiator_key_name]: [AH.name]</A></span><br>"
@@ -136,7 +136,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	..()
 
 /obj/effect/statclick/ticket_list/Click()
-	GLOB.ahelp_tickets.BrowseTickets(current_state)
+	GLOB.support_tickets.BrowseTickets(current_state, ADMIN_TICKET)
 
 //
 //TICKET DATUM
@@ -203,12 +203,12 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			to_chat(C, "<span class='notice'>No active admins are online, your adminhelp was sent to the admin irc.</span>")
 			heard_by_no_admins = TRUE
 
-	GLOB.ahelp_tickets.active_tickets += src
+	GLOB.support_tickets.active_tickets += src
 
 /datum/admin_help/Destroy()
 	RemoveActive()
-	GLOB.ahelp_tickets.closed_tickets -= src
-	GLOB.ahelp_tickets.resolved_tickets -= src
+	GLOB.support_tickets.closed_tickets -= src
+	GLOB.support_tickets.resolved_tickets -= src
 	return ..()
 
 /datum/admin_help/proc/AddInteraction(formatted_message)
@@ -276,14 +276,14 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		to_chat(usr, "<span class='warning'>This ticket is already open.</span>")
 		return
 
-	if(GLOB.ahelp_tickets.CKey2ActiveTicket(initiator_ckey))
+	if(GLOB.support_tickets.CKey2ActiveTicket(initiator_ckey))
 		to_chat(usr, "<span class='warning'>This user already has an active ticket, cannot reopen this one.</span>")
 		return
 
 	statclick = new(null, src)
-	GLOB.ahelp_tickets.active_tickets += src
-	GLOB.ahelp_tickets.closed_tickets -= src
-	GLOB.ahelp_tickets.resolved_tickets -= src
+	GLOB.support_tickets.active_tickets += src
+	GLOB.support_tickets.closed_tickets -= src
+	GLOB.support_tickets.resolved_tickets -= src
 	switch(state)
 		if(AHELP_CLOSED)
 			SSblackbox.record_feedback("tally", "ahelp_stats", -1, "closed")
@@ -307,7 +307,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	closed_at = world.time
 	QDEL_NULL(statclick)
-	GLOB.ahelp_tickets.active_tickets -= src
+	GLOB.support_tickets.active_tickets -= src
 	if(initiator && initiator.current_ticket == src)
 		initiator.current_ticket = null
 
@@ -317,7 +317,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	RemoveActive()
 	state = AHELP_CLOSED
-	GLOB.ahelp_tickets.ListInsert(src)
+	GLOB.support_tickets.ListInsert(src)
 	AddInteraction("<font color='red'>Closed by [key_name].</font>")
 	if(!silent)
 		SSblackbox.record_feedback("tally", "ahelp_stats", 1, "closed")
@@ -331,7 +331,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	RemoveActive()
 	state = AHELP_RESOLVED
-	GLOB.ahelp_tickets.ListInsert(src)
+	GLOB.support_tickets.ListInsert(src)
 
 	addtimer(CALLBACK(initiator, /client/proc/giveadminhelpverb), 50)
 
@@ -533,7 +533,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		C.current_ticket.AddInteraction(message)
 		return C.current_ticket
 	if(istext(what))	//ckey
-		var/datum/admin_help/AH = GLOB.ahelp_tickets.CKey2ActiveTicket(what)
+		var/datum/admin_help/AH = GLOB.support_tickets.CKey2ActiveTicket(what)
 		if(AH)
 			AH.AddInteraction(message)
 			return AH

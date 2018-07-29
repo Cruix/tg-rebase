@@ -12,8 +12,8 @@
 	if(holder)
 		view_tickets()
 	else
-		for(var/I in GLOB.ahelp_tickets.tickets_list)
-			var/datum/admin_help/T = I
+		for(var/I in GLOB.support_tickets.tickets_list)
+			var/datum/support_ticket/T = I
 			if(compare_ckey(T.initiator_ckey, usr) && T.state == AHELP_ACTIVE)
 				T.TicketPanel()
 				return

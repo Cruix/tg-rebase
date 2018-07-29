@@ -27,14 +27,14 @@
 			return
 
 		var/ahelp_ref = href_list["ahelp"]
-		var/datum/admin_help/AH = locate(ahelp_ref)
+		var/datum/support_ticket/AH = locate(ahelp_ref)
 		if(AH)
 			AH.Action(href_list["ahelp_action"])
 		else
 			to_chat(usr, "Ticket [ahelp_ref] has been deleted!")
 
-	else if(href_list["ahelp_tickets"])
-		GLOB.ahelp_tickets.BrowseTickets(text2num(href_list["ahelp_tickets"]))
+	else if(href_list["support_tickets"])
+		GLOB.support_tickets.BrowseTickets(text2num(href_list["support_tickets"]), ADMIN_TICKET)
 
 	else if(href_list["stickyban"])
 		stickyban(href_list["stickyban"],href_list)
@@ -1241,7 +1241,7 @@
 				log_admin_private("[key_name(usr)] has banned [M.ckey].\nReason: [key_name(M)]\nThis will be removed in [mins] minutes.")
 				var/msg = "<span class='adminnotice'>[key_name_admin(usr)] has banned [key_name_admin(M)].\nReason: [reason]\nThis will be removed in [mins] minutes.</span>"
 				message_admins(msg)
-				var/datum/admin_help/AH = M.client ? M.client.current_ticket : null
+				var/datum/support_ticket/AH = M.client ? M.client.current_ticket : null
 				if(AH)
 					AH.Resolve()
 				qdel(M.client)
@@ -1270,7 +1270,7 @@
 				log_admin_private("[key_name(usr)] has banned [key_name(M)].\nReason: [reason]\nThis is a permanent ban.")
 				var/msg = "<span class='adminnotice'>[key_name_admin(usr)] has banned [key_name_admin(M)].\nReason: [reason]\nThis is a permanent ban.</span>"
 				message_admins(msg)
-				var/datum/admin_help/AH = M.client ? M.client.current_ticket : null
+				var/datum/support_ticket/AH = M.client ? M.client.current_ticket : null
 				if(AH)
 					AH.Resolve()
 				qdel(M.client)
